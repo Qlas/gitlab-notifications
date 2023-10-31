@@ -2,8 +2,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    url: str
-    token: str
+    gitlab_url: str
+    gitlab_token: str
     smtp_email: str
     smtp_password: str
     smtp_server: str

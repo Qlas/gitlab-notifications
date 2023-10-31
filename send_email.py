@@ -16,8 +16,8 @@ def prepare_message() -> str:
     return template.format(content=content)
 
 
-def get_gitlab_users_email(url: str, token: str) -> list[str]:
-    with gitlab.Gitlab(url=url, private_token=token) as gl:
+def get_gitlab_users_email(gitlab_url: str, gitlab_token: str) -> list[str]:
+    with gitlab.Gitlab(url=gitlab_url, private_token=gitlab_token) as gl:
         return [
             user.email
             for user in gl.users.list(iterator=True, active=True, without_project_bots=True, exclude_external=True)
@@ -28,6 +28,8 @@ def preview() -> None:
     content = prepare_message()
     with open("preview.html", "w+", encoding="utf-8") as file:
         file.write(content)
+
+    print("A preview file in `preview.html` has been prepared")
 
 
 def parser() -> argparse.Namespace:
@@ -51,7 +53,7 @@ def main() -> None:
         preview()
         return None
 
-    emails = get_gitlab_users_email(settings.url, settings.token)
+    emails = get_gitlab_users_email(settings.gitlab_url, settings.gitlab_token)
 
     print(f"You will send email to {len(emails)} accounts.\nRecipients: {", ".join(emails)}")
 
