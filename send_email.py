@@ -20,11 +20,7 @@ def get_gitlab_users_email(url: str, token: str) -> list[str]:
     with gitlab.Gitlab(url=url, private_token=token) as gl:
         return [
             user.email
-            for user in gl.users.list(
-                iterator=True,
-                active=True,
-                without_project_bots=True,
-            )
+            for user in gl.users.list(iterator=True, active=True, without_project_bots=True, exclude_external=True)
         ]
 
 
